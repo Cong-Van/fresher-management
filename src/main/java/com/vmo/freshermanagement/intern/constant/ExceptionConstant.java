@@ -7,4 +7,5 @@ public class ExceptionConstant {
     public static final String NOT_ENOUGH_PERMISSION = "You do not have enough permission";
     public static final String INCORRECT_CREDENTIALS = "Username or password incorrect. Please try again!";
     public static final String NOT_FOUND_FRESHER = "Fresher hasn't been added or has been removed";
+    public static final String NOT_FOUND_CENTER = "Not found Center";
 }

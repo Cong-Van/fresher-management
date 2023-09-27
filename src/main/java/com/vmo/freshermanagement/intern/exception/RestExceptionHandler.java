@@ -1,9 +1,7 @@
-package com.vmo.freshermanagement.intern.controller;
+package com.vmo.freshermanagement.intern.exception;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.vmo.freshermanagement.intern.common.HttpResponse;
-import com.vmo.freshermanagement.intern.exception.CenterNotFoundException;
-import com.vmo.freshermanagement.intern.exception.FresherNotFoundException;
 import jakarta.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -67,6 +66,11 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<HttpResponse> httpMessageNotReadableException(HttpMessageNotReadableException exc) {
+        return createHttpResponse(BAD_REQUEST, exc.getMessage());
+    }
+
+    @ExceptionHandler(TransactionSystemException.class)
+    public ResponseEntity<HttpResponse> transactionSystemException(TransactionSystemException exc) {
         return createHttpResponse(BAD_REQUEST, exc.getMessage());
     }
 

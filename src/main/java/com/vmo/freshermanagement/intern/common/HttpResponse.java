@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class HttpResponse {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss dd/MM/YYYY", timezone = "Asia/Ho_Chi_Minh")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss dd/MM/yyyy", timezone = "Asia/Ho_Chi_Minh")
     private Date timestamp;
     private int httpStatusCode;
     private HttpStatus httpStatus;

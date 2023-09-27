@@ -13,9 +13,11 @@ create table freshers (
     email varchar(125) not null,
     position varchar(100) not null,
     language varchar(100) not null,
-    mark1 int,
-    mark2 int,
-    mark3 int,
+    joined_date date not null,
+    graduated_date date,
+    mark1 double,
+    mark2 double,
+    mark3 double,
     mark_avg double,
     center_id int
 );
@@ -38,6 +40,10 @@ create table centers (
     name varchar(255) not null,
     address varchar(255) not null,
     phone varchar(20) not null,
+    created_date datetime not null,
+    created_by varchar(100) not null,
+    updated_date datetime,
+    updated_by varchar(100) not null,
     description text
 );
 
@@ -45,7 +51,8 @@ create table users (
 	id int auto_increment not null primary key,
     username varchar(100) not null,
     password varchar(68) not null,
-    authority varchar(100) not null
+    authority varchar(100) not null,
+    is_not_locked tinyint not null
 );
 
 insert into 

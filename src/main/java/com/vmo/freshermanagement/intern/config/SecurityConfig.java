@@ -3,7 +3,8 @@ package com.vmo.freshermanagement.intern.config;
 import com.vmo.freshermanagement.intern.security.JwtAccessDeniedHandler;
 import com.vmo.freshermanagement.intern.security.JwtAuthenticationEntryPoint;
 import com.vmo.freshermanagement.intern.security.JwtAuthorizationFilter;
-import com.vmo.freshermanagement.intern.service.UserService;
+import com.vmo.freshermanagement.intern.service.CenterService;
+import com.vmo.freshermanagement.intern.service.LoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,9 +40,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(UserService userService) {
+    public DaoAuthenticationProvider authenticationProvider(LoginService loginService) {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(userService);
+        auth.setUserDetailsService(loginService);
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }

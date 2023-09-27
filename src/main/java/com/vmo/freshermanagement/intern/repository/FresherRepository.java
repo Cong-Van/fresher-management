@@ -18,6 +18,5 @@ public interface FresherRepository extends JpaRepository<Fresher, Integer> {
     @Query(value = "SELECT * FROM freshers WHERE email LIKE %?1%", nativeQuery = true)
     List<Fresher> findAllByEmail(String email);
 
-    @Query(value = "SELECT * FROM freshers WHERE mark_avg >= ?1", nativeQuery = true)
-    List<Fresher> findAllByMark(double mark);
+    List<Fresher> findAllByMarkAvg(double mark);
 }
