@@ -6,6 +6,7 @@ public class SecurityConstant {
     public static final String JWT_TOKEN_HEADER = "Jwt-Token";
     public static final String TOKEN_CANNOT_BE_VERIFIED = "Token cannot verified";
     public static final String VMO_INTERN = "VMO Intern T9 2023";
+    public static final String EMAIL_TO_SEND = "conglvfx20485@funix.edu.vn";
     public static final String ADMINISTRATION = "Admin";
     public static final String AUTHORITY = "Authority";
     public static final String FORBIDDEN_MESSAGE = "You need to login to access this page";

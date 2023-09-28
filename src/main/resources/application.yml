@@ -6,14 +6,22 @@ spring:
     url: jdbc:mysql://localhost:3306/fresher_management
     username: van
     password: SQLWorkbench
-#    url: jdbc:postgresql://dpg-civth96nqql48o2sot5g-a.singapore-postgres.render.com/fresher_management
-#    username: demo_project_90zq_user
-#    password: wEQXvZhEtbzQ4Qe47aVoOlMIXYTUVUm4
-
   jpa:
     hibernate:
       ddl-auto: update
+  mail:
+    host: smtp.gmail.com
+    username: conglvfx20485@funix.edu.vn
+    password: FuNi20485
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
+# Show message when query error
 logging:
   level:
     org:
