@@ -88,7 +88,7 @@ public class Fresher {
 
     public void setMarkAvg() {
         DecimalFormat df = new DecimalFormat("#.#");
-        this.markAvg = Double.parseDouble(df.format((double) (mark1 + mark2 + mark3) / 3));
+        this.markAvg = Double.parseDouble(df.format((mark1 + mark2 + mark3) / 3));
     }
 
 }
