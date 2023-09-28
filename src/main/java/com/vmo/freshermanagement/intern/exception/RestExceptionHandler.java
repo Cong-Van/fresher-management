@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,6 +39,11 @@ public class RestExceptionHandler {
         return createHttpResponse(FORBIDDEN, NOT_ENOUGH_PERMISSION);
     }
 
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<HttpResponse> lockedException() {
+        return createHttpResponse(UNAUTHORIZED, ACCOUNT_LOCKED);
+    }
+
     @ExceptionHandler(TokenExpiredException.class)
     public ResponseEntity<HttpResponse> tokenExpiredException(TokenExpiredException exc) {
         return createHttpResponse(FORBIDDEN, exc.getMessage());
@@ -56,6 +62,21 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(CenterNotFoundException.class)
     public ResponseEntity<HttpResponse> centerNotFoundException(CenterNotFoundException exc) {
+        return createHttpResponse(BAD_REQUEST, exc.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<HttpResponse> userNotFoundException(UserNotFoundException exc) {
+        return createHttpResponse(BAD_REQUEST, exc.getMessage());
+    }
+
+    @ExceptionHandler(UsernameExistException.class)
+    public ResponseEntity<HttpResponse> usernameExistException(UsernameExistException exc) {
+        return createHttpResponse(BAD_REQUEST, exc.getMessage());
+    }
+
+    @ExceptionHandler(UsernameNotExistException.class)
+    public ResponseEntity<HttpResponse> usernameNotExistException(UsernameNotExistException exc) {
         return createHttpResponse(BAD_REQUEST, exc.getMessage());
     }
 

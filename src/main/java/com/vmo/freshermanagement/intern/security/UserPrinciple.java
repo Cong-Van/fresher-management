@@ -18,7 +18,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String authority = user.getAuthority();
+        String authority = user.getAuthority().getName();
         return Collections.singleton(new SimpleGrantedAuthority(authority));
     }
 

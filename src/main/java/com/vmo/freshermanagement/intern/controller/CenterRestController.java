@@ -49,6 +49,8 @@ public class CenterRestController {
     @PostMapping("/centers")
     @Operation(summary = "Create center information")
     public Center createCenter(@RequestBody Center newCenter) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        newCenter.setCreatedBy(username);
         return centerService.createCenter(newCenter);
     }
 

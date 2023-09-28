@@ -23,8 +23,9 @@ public class User {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "authority")
-    private String authority;
+    @ManyToOne
+    @JoinColumn(name = "authority_id")
+    private Authority authority;
 
     @Column(name = "password")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -32,4 +33,12 @@ public class User {
 
     @Column(name = "is_not_locked")
     private boolean isNotLocked;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.authority = new Authority();
+        this.authority.setId(2);
+        this.setNotLocked(true);
+    }
 }

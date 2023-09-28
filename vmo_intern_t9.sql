@@ -47,16 +47,26 @@ create table centers (
     description text
 );
 
+create table authorities (
+	id int auto_increment not null primary key,
+    name varchar(50) not null
+);
+
 create table users (
 	id int auto_increment not null primary key,
     username varchar(100) not null,
     password varchar(68) not null,
-    authority varchar(100) not null,
-    is_not_locked tinyint not null
+    authority_id int not null,
+    is_not_locked tinyint not null,
+    foreign key(authority_id) references authorities(id)
 );
+
+insert into
+authorities (name)
+values ("ADMIN"), ("MANAGER");
 
 insert into 
 users 
-(username, password, authority)
+(username, password, authority_id, is_not_locked)
 values
-("admin", "$2a$12$6ZSwyWD1UqhDLSkhrmXsKe3VzyhTY77x5uTwFVQ40xBCqUbozoRO6", "ROLE_ADMIN")
+("admin", "$2a$12$6ZSwyWD1UqhDLSkhrmXsKe3VzyhTY77x5uTwFVQ40xBCqUbozoRO6", 1, 1)

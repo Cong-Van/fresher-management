@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import static com.vmo.freshermanagement.intern.constant.UserServiceConstant.FOUND_USER_BY_USERNAME;
-import static com.vmo.freshermanagement.intern.constant.UserServiceConstant.USERNAME_NOT_FOUND;
+import static com.vmo.freshermanagement.intern.constant.ExceptionConstant.FOUND_USER_BY_USERNAME;
+import static com.vmo.freshermanagement.intern.constant.ExceptionConstant.USERNAME_NOT_FOUND;
 
 @Service
 public class LoginServiceImpl implements LoginService {
