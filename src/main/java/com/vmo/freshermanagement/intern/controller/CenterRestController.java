@@ -1,21 +1,10 @@
 package com.vmo.freshermanagement.intern.controller;
 
-import com.vmo.freshermanagement.intern.constant.SecurityConstant;
 import com.vmo.freshermanagement.intern.entity.Center;
 import com.vmo.freshermanagement.intern.entity.Fresher;
-import com.vmo.freshermanagement.intern.entity.User;
-import com.vmo.freshermanagement.intern.security.JwtTokenProvider;
-import com.vmo.freshermanagement.intern.security.UserPrinciple;
 import com.vmo.freshermanagement.intern.service.CenterService;
 import com.vmo.freshermanagement.intern.service.FresherService;
-import com.vmo.freshermanagement.intern.service.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,13 +45,14 @@ public class CenterRestController {
 
     @PutMapping("/centers/{center_id}")
     @Operation(summary = "Update center information")
-    public Center updateCenter(@PathVariable("center_id") int centerId, @RequestBody Center updateCenter) {
+    public Center updateCenter(@PathVariable("center_id") int centerId,
+                               @RequestParam("name") String name,
+                               @RequestParam("phone") String phone,
+                               @RequestParam("address") String address,
+                               @RequestParam("description") String description) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Center center = centerService.getCenterById(centerId);
 
-        center.setUpdatedBy(username);
-        centerService.updateCenter(center, updateCenter);
-        return center;
+        return centerService.updateCenter(centerId, username, name, phone, address, description);
     }
 
     @PutMapping("/centers/{center_id}/{fresher_id}")

@@ -34,7 +34,7 @@ public class CenterServiceImpl implements CenterService {
     @Override
     public Center getCenterById(int centerId) {
         Optional<Center> center = centerRepository.findById(centerId);
-        if (!center.isPresent()) {
+        if (center.isEmpty()) {
             throw new CenterNotFoundException(NOT_FOUND_CENTER);
         }
         return center.get();
@@ -48,19 +48,26 @@ public class CenterServiceImpl implements CenterService {
     }
 
     @Override
-    public void updateCenter(Center center, Center updateCenter) {
-        center.setName(updateCenter.getName());
-        center.setPhone(updateCenter.getPhone());
-        center.setAddress(updateCenter.getAddress());
-        center.setDescription(updateCenter.getDescription());
+    public Center updateCenter(int centerId, String username, String name, String phone, String address, String description) {
+        Optional<Center> centerOp = centerRepository.findById(centerId);
+        if (centerOp.isEmpty()) {
+            throw new CenterNotFoundException(NOT_FOUND_CENTER);
+        }
+
+        Center center = centerOp.get();
+        center.setUpdatedBy(username);
+        center.setName(name);
+        center.setPhone(phone);
+        center.setAddress(address);
+        center.setDescription(description);
         center.setUpdatedDate(LocalDateTime.now());
-        centerRepository.save(center);
+        return centerRepository.save(center);
     }
 
     @Override
     public void deleteCenterById(int centerId) {
         Optional<Center> center = centerRepository.findById(centerId);
-        if (!center.isPresent()) {
+        if (center.isEmpty()) {
             throw new CenterNotFoundException(NOT_FOUND_CENTER);
         }
         List<Fresher> fresherList = fresherRepository.findAllByCenterId(centerId);
@@ -81,7 +88,7 @@ public class CenterServiceImpl implements CenterService {
     @Override
     public List<Fresher> getAllFresherByCenterId(int centerId) {
         Optional<Center> center = centerRepository.findById(centerId);
-        if (!center.isPresent()) {
+        if (center.isEmpty()) {
             throw new CenterNotFoundException(NOT_FOUND_CENTER);
         }
         return fresherRepository.findAllByCenterId(centerId);

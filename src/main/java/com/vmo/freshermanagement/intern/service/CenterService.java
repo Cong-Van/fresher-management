@@ -13,7 +13,7 @@ public interface CenterService {
 
     Center getCenterById(int centerId);
 
-    void updateCenter(Center center, Center updateCenter);
+    Center updateCenter(int centerId, String username, String name, String phone, String address, String description);
 
     void deleteCenterById(int centerId);
 

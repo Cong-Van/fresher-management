@@ -5,8 +5,6 @@ import com.vmo.freshermanagement.intern.repository.FresherRepository;
 import com.vmo.freshermanagement.intern.service.CronjobService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,14 +13,14 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import static com.vmo.freshermanagement.intern.constant.SecurityConstant.*;
+import static com.vmo.freshermanagement.intern.constant.SecurityConstant.ADMINISTRATION;
+import static com.vmo.freshermanagement.intern.constant.SecurityConstant.EMAIL_TO_SEND;
 
 @Service
 public class CronJobServiceImpl implements CronjobService {
 
     private FresherRepository fresherRepository;
     private JavaMailSender javaMailSender;
-    private Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     public CronJobServiceImpl(FresherRepository fresherRepository,
                               JavaMailSender javaMailSender) {
@@ -43,6 +41,7 @@ public class CronJobServiceImpl implements CronjobService {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
+        String MARK_COLUMN = "        <td align=\"center\"> %s </td>%n";
         String subject = "Fresher mark report";
         String content = "<p>Hello, " + fresher.getName() + "</p>" +
                 "<p>I want to send you the marks of assignments:</p>" +
@@ -54,10 +53,10 @@ public class CronJobServiceImpl implements CronjobService {
                 "        <td>Mark avg</td>\n" +
                 "      </tr>\n" +
                 "      <tr>\n" +
-                "        <td align=\"center\">" + fresher.getMark1() +"</td>\n" +
-                "        <td align=\"center\">" + fresher.getMark2() +"</td>\n" +
-                "        <td align=\"center\">" + fresher.getMark3() +"</td>\n" +
-                "        <td align=\"center\">" + fresher.getMarkAvg() +"</td>\n" +
+                String.format(MARK_COLUMN, fresher.getMark1()) +
+                String.format(MARK_COLUMN, fresher.getMark2()) +
+                String.format(MARK_COLUMN, fresher.getMark3()) +
+                String.format(MARK_COLUMN, fresher.getMarkAvg()) +
                 "      </tr>\n" +
                 "    </table><br>" +
                 "<p>Hope you study well!</p>";

@@ -34,7 +34,7 @@ public class FresherServiceImpl implements FresherService {
     @Override
     public Fresher getFresherById(int fresherId) {
         Optional<Fresher> fresher = fresherRepository.findById(fresherId);
-        if (!fresher.isPresent()) {
+        if (fresher.isEmpty()) {
             throw new FresherNotFoundException(NOT_FOUND_FRESHER);
         }
         return fresher.get();
@@ -62,7 +62,7 @@ public class FresherServiceImpl implements FresherService {
     public Fresher updateFresher(int fresherId, String name, String dob, String gender,
                                  String phone, String email, String position, String language) {
         Optional<Fresher> fresherOp = fresherRepository.findById(fresherId);
-        if (!fresherOp.isPresent()) {
+        if (fresherOp.isEmpty()) {
             throw new FresherNotFoundException(NOT_FOUND_FRESHER);
         }
         Fresher fresher = fresherOp.get();
@@ -98,7 +98,7 @@ public class FresherServiceImpl implements FresherService {
     @Override
     public void deleteFresherById(int fresherId) {
         Optional<Fresher> fresher = fresherRepository.findById(fresherId);
-        if (!fresher.isPresent()) {
+        if (fresher.isEmpty()) {
             throw new FresherNotFoundException(NOT_FOUND_FRESHER);
         }
         fresherRepository.delete(fresher.get());
