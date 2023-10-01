@@ -1,16 +1,21 @@
 package com.vmo.freshermanagement.intern.service.impl;
 
+import com.vmo.freshermanagement.intern.common.Gender;
 import com.vmo.freshermanagement.intern.entity.Fresher;
+import com.vmo.freshermanagement.intern.exception.EmailExistException;
 import com.vmo.freshermanagement.intern.exception.FresherNotFoundException;
+import com.vmo.freshermanagement.intern.exception.PhoneExistException;
 import com.vmo.freshermanagement.intern.repository.FresherRepository;
 import com.vmo.freshermanagement.intern.service.FresherService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-import static com.vmo.freshermanagement.intern.constant.ExceptionConstant.NOT_FOUND_FRESHER;
+import static com.vmo.freshermanagement.intern.constant.ExceptionConstant.*;
+import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_FORMAT;
 
 @Service
 public class FresherServiceImpl implements FresherService {
@@ -37,21 +42,48 @@ public class FresherServiceImpl implements FresherService {
 
     @Override
     public Fresher addFresher(Fresher newFresher) {
+        String email = newFresher.getEmail();
+        String phone = newFresher.getPhone();
+
+        Fresher savedFresher = fresherRepository.findByEmail(email);
+        if (savedFresher != null) {
+            throw new EmailExistException(String.format(EMAIL_WAS_IN_USE, email, savedFresher.getName()));
+        }
+        savedFresher = fresherRepository.findByPhone(phone);
+        if (savedFresher != null) {
+            throw new PhoneExistException(String.format(PHONE_NUMBER_WAS_IN_USE, phone, savedFresher.getName()));
+        }
+
         newFresher.setJoinedDate(LocalDate.now());
         return fresherRepository.save(newFresher);
     }
 
     @Override
-    public void updateFresher(Fresher fresher, Fresher updateFresher) {
-        fresher.setCenter(updateFresher.getCenter());
-        fresher.setDob(updateFresher.getDob());
-        fresher.setEmail(updateFresher.getEmail());
-        fresher.setGender(updateFresher.getGender());
-        fresher.setLanguage(updateFresher.getLanguage());
-        fresher.setName(updateFresher.getName());
-        fresher.setPhone(updateFresher.getPhone());
-        fresher.setPosition(updateFresher.getPosition());
-        fresherRepository.save(fresher);
+    public Fresher updateFresher(int fresherId, String name, String dob, String gender,
+                                 String phone, String email, String position, String language) {
+        Optional<Fresher> fresherOp = fresherRepository.findById(fresherId);
+        if (!fresherOp.isPresent()) {
+            throw new FresherNotFoundException(NOT_FOUND_FRESHER);
+        }
+        Fresher fresher = fresherOp.get();
+
+        Fresher savedFresher = fresherRepository.findByEmail(email);
+        if (savedFresher != null && !fresher.getEmail().equals(email)) {
+            throw new EmailExistException(String.format(EMAIL_WAS_IN_USE, email, savedFresher.getName()));
+        }
+        savedFresher = fresherRepository.findByPhone(phone);
+        if (savedFresher != null && !fresher.getPhone().equals(phone)) {
+            throw new PhoneExistException(String.format(PHONE_NUMBER_WAS_IN_USE, phone, savedFresher.getName()));
+        }
+
+        fresher.setName(name);
+        fresher.setDob(dateValue(dob));
+        fresher.setGender(genderValue(gender));
+        fresher.setPhone(phone);
+        fresher.setEmail(email);
+        fresher.setPosition(position);
+        fresher.setLanguage(language);
+        return fresherRepository.save(fresher);
     }
 
     @Override
@@ -90,5 +122,14 @@ public class FresherServiceImpl implements FresherService {
     @Override
     public List<Fresher> getAllFresherByMark(double mark) {
         return fresherRepository.findAllByMarkAvg(mark);
+    }
+
+    private LocalDate dateValue(String date) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        return LocalDate.parse(date, dtf);
+    }
+
+    private Gender genderValue(String name) {
+        return Gender.valueOf(name);
     }
 }

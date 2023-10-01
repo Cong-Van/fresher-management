@@ -11,6 +11,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_TIME_FORMAT;
+
 @Entity
 @Getter
 @Setter
@@ -35,14 +37,14 @@ public class Center {
     private String phone;
 
     @Column(name = "created_date")
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+    @JsonFormat(pattern = DATE_TIME_FORMAT)
     private LocalDateTime createdDate;
 
     @Column(name = "created_by")
     private String createdBy;
 
     @Column(name = "updated_date")
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+    @JsonFormat(pattern = DATE_TIME_FORMAT)
     private LocalDateTime updatedDate;
 
     @Column(name = "updated_by")

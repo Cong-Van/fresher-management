@@ -15,6 +15,8 @@ import lombok.Setter;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 
+import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_FORMAT;
+
 @Entity
 @Getter
 @Setter
@@ -33,7 +35,7 @@ public class Fresher {
     private String name;
 
     @Column(name = "dob")
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDate dob;
 
     // @Enumerated(EnumType.STRING)
@@ -57,11 +59,11 @@ public class Fresher {
     private String language;
 
     @Column(name = "joined_date")
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDate joinedDate;
 
     @Column(name = "graduated_date")
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDate graduatedDate;
 
     @Column(name = "mark1")

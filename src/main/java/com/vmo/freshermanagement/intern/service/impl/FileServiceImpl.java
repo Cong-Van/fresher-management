@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.vmo.freshermanagement.intern.constant.ServiceConstant.COMMA_DELIMITER;
-import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_TIME_FORMAT;
+import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_FORMAT;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -92,7 +92,7 @@ public class FileServiceImpl implements FileService {
     }
 
     private LocalDate dateValue(String date) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_FORMAT);
         return LocalDate.parse(date, dtf);
     }
 

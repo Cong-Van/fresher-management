@@ -12,7 +12,8 @@ public interface FresherService {
 
     Fresher addFresher(Fresher newFresher);
 
-    void updateFresher(Fresher fresher, Fresher updateFresher);
+    Fresher updateFresher(int fresherId, String name, String dob, String gender,
+                          String phone, String email, String position, String language);
 
     void deleteFresherById(int fresherId);
 

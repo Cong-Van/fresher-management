@@ -80,6 +80,16 @@ public class RestExceptionHandler {
         return createHttpResponse(BAD_REQUEST, exc.getMessage());
     }
 
+    @ExceptionHandler(EmailExistException.class)
+    public ResponseEntity<HttpResponse> emailExistException(EmailExistException exc) {
+        return createHttpResponse(BAD_REQUEST, exc.getMessage());
+    }
+
+    @ExceptionHandler(PhoneExistException.class)
+    public ResponseEntity<HttpResponse> phoneExistException(PhoneExistException exc) {
+        return createHttpResponse(BAD_REQUEST, exc.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<HttpResponse> methodArgumentNotValidException(MethodArgumentNotValidException exc) {
         return createHttpResponse(BAD_REQUEST, exc.getFieldError().getDefaultMessage());

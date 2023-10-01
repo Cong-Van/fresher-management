@@ -38,10 +38,16 @@ public class FresherRestController {
 
     @PutMapping("/freshers/{fresher_id}")
     @Operation(summary = "Update fresher information")
-    public Fresher updateInfoFresher(@PathVariable("fresher_id") int fresherId, @RequestBody Fresher updateFresher) {
-        Fresher fresher = fresherService.getFresherById(fresherId);
-        fresherService.updateFresher(fresher, updateFresher);
-        return fresher;
+    public Fresher updateInfoFresher(@PathVariable("fresher_id") int fresherId,
+                                     @RequestParam("name") String name,
+                                     @RequestParam("dob") String dob,
+                                     @RequestParam("gender") String gender,
+                                     @RequestParam("phone") String phone,
+                                     @RequestParam("email") String email,
+                                     @RequestParam("position") String position,
+                                     @RequestParam("language") String language) {
+
+        return fresherService.updateFresher(fresherId, name, dob, gender, phone, email, position, language);
     }
 
     @DeleteMapping("/freshers/{fresher_id}")

@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface FresherRepository extends JpaRepository<Fresher, Integer> {
 
+    Fresher findByEmail(String email);
+
+    Fresher findByPhone(String phone);
+
     List<Fresher> findAllByCenterId(int centerId);
 
     @Query(value = "SELECT * FROM freshers WHERE name LIKE %?1%", nativeQuery = true)

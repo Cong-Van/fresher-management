@@ -14,4 +14,6 @@ public class ExceptionConstant {
     public static final String NOT_FOUND_FRESHER = "Fresher hasn't been added or has been removed";
     public static final String NOT_FOUND_CENTER = "Not found Center";
     public static final String NOT_FOUND_USER = "Not found user";
+    public static final String EMAIL_WAS_IN_USE = "Email '%s' was in use by %s";
+    public static final String PHONE_NUMBER_WAS_IN_USE = "Phone number '%s' was in use by %s";
 }
