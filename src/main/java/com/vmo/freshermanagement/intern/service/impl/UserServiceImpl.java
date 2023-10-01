@@ -1,6 +1,5 @@
-package com.vmo.freshermanagement.intern.service.Impl;
+package com.vmo.freshermanagement.intern.service.impl;
 
-import com.vmo.freshermanagement.intern.entity.Authority;
 import com.vmo.freshermanagement.intern.entity.User;
 import com.vmo.freshermanagement.intern.exception.UserNotFoundException;
 import com.vmo.freshermanagement.intern.exception.UsernameExistException;
@@ -12,17 +11,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
-import static com.vmo.freshermanagement.intern.constant.ExceptionConstant.USERNAME_ALREADY_EXIST;
-import static com.vmo.freshermanagement.intern.constant.ExceptionConstant.USERNAME_NOT_EXIST;
+import static com.vmo.freshermanagement.intern.constant.ExceptionConstant.*;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    public static final String NOT_FOUND_USER = "Not found user";
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private Logger LOGGER = LoggerFactory.getLogger(getClass());

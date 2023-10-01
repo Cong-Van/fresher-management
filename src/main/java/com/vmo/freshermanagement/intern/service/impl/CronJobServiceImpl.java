@@ -1,4 +1,4 @@
-package com.vmo.freshermanagement.intern.service.Impl;
+package com.vmo.freshermanagement.intern.service.impl;
 
 import com.vmo.freshermanagement.intern.entity.Fresher;
 import com.vmo.freshermanagement.intern.repository.FresherRepository;

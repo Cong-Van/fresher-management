@@ -1,4 +1,4 @@
-package com.vmo.freshermanagement.intern.service.Impl;
+package com.vmo.freshermanagement.intern.service.impl;
 
 import com.vmo.freshermanagement.intern.entity.Center;
 import com.vmo.freshermanagement.intern.entity.Fresher;
@@ -8,7 +8,6 @@ import com.vmo.freshermanagement.intern.repository.FresherRepository;
 import com.vmo.freshermanagement.intern.service.CenterService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

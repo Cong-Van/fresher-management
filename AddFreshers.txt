@@ -1,0 +1,3 @@
+Văn, 18/03/1998, Nam, 0245642154, congvan@gmail.com, Back-end, Java
+Hoàng, 26/06/2001, Nam, 0351245849, hoang@gmail.com, Back-end, Python
+Ngọc, 20/10/2000, Nữ, 0254152498, minhngoc@gmail.com, BA, NodeJS
