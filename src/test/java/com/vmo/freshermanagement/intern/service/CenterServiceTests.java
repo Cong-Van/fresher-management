@@ -1,6 +1,8 @@
 package com.vmo.freshermanagement.intern.service;
 
+import com.vmo.freshermanagement.intern.common.Gender;
 import com.vmo.freshermanagement.intern.entity.Center;
+import com.vmo.freshermanagement.intern.entity.Fresher;
 import com.vmo.freshermanagement.intern.exception.CenterNotFoundException;
 import com.vmo.freshermanagement.intern.repository.CenterRepository;
 import com.vmo.freshermanagement.intern.repository.FresherRepository;
@@ -14,12 +16,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_FORMAT;
 import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_TIME_FORMAT;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -38,6 +42,7 @@ public class CenterServiceTests {
 
     private Center center1;
     private Center center2;
+    private Fresher fresher;
     private String MANAGER = "MANAGER";
     private String ADMIN = "ADMIN";
     private String CREATED_DATE_TIME = "12:34:56 07/08/2000";
@@ -62,6 +67,17 @@ public class CenterServiceTests {
                 .description("Mô tả")
                 .createdBy(MANAGER)
                 .createdDate(dateTimeValue(CREATED_DATE_TIME))
+                .build();
+
+        fresher = Fresher.builder()
+                .name("Văn")
+                .dob(dateValue("01/01/2000"))
+                .gender(genderValue("Nam"))
+                .email("congvan@gmail.com")
+                .phone("0123456789")
+                .position("Back-end")
+                .language("Java")
+                .joinedDate(dateValue("02/10/2023"))
                 .build();
     }
 
@@ -136,8 +152,31 @@ public class CenterServiceTests {
         verify(centerRepository, times(1)).deleteById(centerId);
     }
 
+    // JUnit test for transferFresherToCenter method
+    @Test
+    @DisplayName("JUnit test for transferFresherToCenter method")
+    public void givenFresherIdCenterId_whenTransferFresherToCenter_thenReturnUpdatedFresher() {
+        // given - precondition or setup
+
+        // when - action or behaviour that we are going to test
+        centerService.transferFresherToCenter(fresher, center2);
+
+        // then - verify the output
+        assertThat(fresher.getCenter()).isNotNull();
+        assertThat(fresher.getCenter().getId()).isEqualTo(center2.getId());
+    }
+
+    private LocalDate dateValue(String date) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        return LocalDate.parse(date, dtf);
+    }
+
     private LocalDateTime dateTimeValue(String dateTime) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
         return LocalDateTime.parse(dateTime, dtf);
+    }
+
+    private Gender genderValue(String name) {
+        return Gender.valueOf(name);
     }
 }
