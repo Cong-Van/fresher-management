@@ -5,6 +5,7 @@ import com.vmo.freshermanagement.intern.entity.Fresher;
 import com.vmo.freshermanagement.intern.service.CenterService;
 import com.vmo.freshermanagement.intern.service.FresherService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,7 @@ public class CenterRestController {
 
     @PostMapping("/centers")
     @Operation(summary = "Create center information")
-    public Center createCenter(@RequestBody Center newCenter) {
+    public Center createCenter(@Valid @RequestBody Center newCenter) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         newCenter.setCreatedBy(username);
         return centerService.createCenter(newCenter);
