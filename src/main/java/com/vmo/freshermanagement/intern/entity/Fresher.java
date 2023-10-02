@@ -7,10 +7,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -23,6 +20,7 @@ import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_FOR
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "freshers")
+@Builder
 public class Fresher {
 
     @Id

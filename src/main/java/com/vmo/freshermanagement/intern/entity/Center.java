@@ -3,10 +3,7 @@ package com.vmo.freshermanagement.intern.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +16,7 @@ import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_TIM
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "centers")
+@Builder
 public class Center {
 
     @Id
