@@ -49,18 +49,15 @@ public class CenterServiceImpl implements CenterService {
 
     @Override
     public Center updateCenter(int centerId, String username, String name, String phone, String address, String description) {
-        Optional<Center> centerOp = centerRepository.findById(centerId);
-        if (centerOp.isEmpty()) {
-            throw new CenterNotFoundException(NOT_FOUND_CENTER);
-        }
+        Center center = getCenterById(centerId);
 
-        Center center = centerOp.get();
         center.setUpdatedBy(username);
         center.setName(name);
         center.setPhone(phone);
         center.setAddress(address);
         center.setDescription(description);
         center.setUpdatedDate(LocalDateTime.now());
+
         return centerRepository.save(center);
     }
 

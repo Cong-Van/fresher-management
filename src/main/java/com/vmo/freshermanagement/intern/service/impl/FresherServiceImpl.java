@@ -61,11 +61,7 @@ public class FresherServiceImpl implements FresherService {
     @Override
     public Fresher updateFresher(int fresherId, String name, String dob, String gender,
                                  String phone, String email, String position, String language) {
-        Optional<Fresher> fresherOp = fresherRepository.findById(fresherId);
-        if (fresherOp.isEmpty()) {
-            throw new FresherNotFoundException(NOT_FOUND_FRESHER);
-        }
-        Fresher fresher = fresherOp.get();
+        Fresher fresher = getFresherById(fresherId);
 
         Fresher savedFresher = fresherRepository.findByEmail(email);
         if (savedFresher != null && !fresher.getEmail().equals(email)) {
