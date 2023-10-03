@@ -157,9 +157,13 @@ public class CenterServiceTests {
     @DisplayName("JUnit test for transferFresherToCenter method")
     public void givenFresherIdCenterId_whenTransferFresherToCenter_thenReturnUpdatedFresher() {
         // given - precondition or setup
+        int centerId = 2, fresherId = 1;
+        given(centerRepository.findById(centerId)).willReturn(Optional.of(center2));
+        given(fresherRepository.findById(fresherId)).willReturn(Optional.of(fresher));
+        given(fresherRepository.save(fresher)).willReturn(fresher);
 
         // when - action or behaviour that we are going to test
-        centerService.transferFresherToCenter(fresher, center2);
+        centerService.transferFresherToCenter(centerId, fresherId, MANAGER);
 
         // then - verify the output
         assertThat(fresher.getCenter()).isNotNull();

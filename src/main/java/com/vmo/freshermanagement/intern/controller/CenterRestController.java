@@ -15,12 +15,9 @@ import java.util.List;
 @RequestMapping("/v1")
 public class CenterRestController {
 
-    private FresherService fresherService;
     private CenterService centerService;
 
-    public CenterRestController(FresherService fresherService,
-                                CenterService centerService) {
-        this.fresherService = fresherService;
+    public CenterRestController(CenterService centerService) {
         this.centerService = centerService;
     }
 
@@ -61,12 +58,8 @@ public class CenterRestController {
     public Fresher transferFresherToCenter(@PathVariable("center_id") int centerId,
                                            @PathVariable("fresher_id") int fresherId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Center center = centerService.getCenterById(centerId);
-        Fresher fresher = fresherService.getFresherById(fresherId);
 
-        center.setUpdatedBy(username);
-        centerService.transferFresherToCenter(fresher, center);
-        return fresher;
+        return centerService.transferFresherToCenter(centerId, fresherId, username);
     }
 
     @DeleteMapping("/centers/{center_id}")

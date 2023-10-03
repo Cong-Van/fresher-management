@@ -3,6 +3,7 @@ package com.vmo.freshermanagement.intern.service.impl;
 import com.vmo.freshermanagement.intern.entity.Center;
 import com.vmo.freshermanagement.intern.entity.Fresher;
 import com.vmo.freshermanagement.intern.exception.CenterNotFoundException;
+import com.vmo.freshermanagement.intern.exception.FresherNotFoundException;
 import com.vmo.freshermanagement.intern.repository.CenterRepository;
 import com.vmo.freshermanagement.intern.repository.FresherRepository;
 import com.vmo.freshermanagement.intern.service.CenterService;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.vmo.freshermanagement.intern.constant.ExceptionConstant.NOT_FOUND_CENTER;
+import static com.vmo.freshermanagement.intern.constant.ExceptionConstant.NOT_FOUND_FRESHER;
 
 @Service
 public class CenterServiceImpl implements CenterService {
@@ -76,10 +78,18 @@ public class CenterServiceImpl implements CenterService {
     }
 
     @Override
-    public void transferFresherToCenter(Fresher fresher, Center center) {
+    public Fresher transferFresherToCenter(int centerId, int fresherId, String username) {
+        Center center = getCenterById(centerId);
+        Optional<Fresher> fresherOp = fresherRepository.findById(fresherId);
+        if (fresherOp.isEmpty()) {
+            throw new FresherNotFoundException(NOT_FOUND_FRESHER);
+        }
+        Fresher fresher = fresherOp.get();
+
         fresher.setCenter(center);
+        center.setUpdatedBy(username);
         center.setUpdatedDate(LocalDateTime.now());
-        fresherRepository.save(fresher);
+        return fresherRepository.save(fresher);
     }
 
     @Override

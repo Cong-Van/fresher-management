@@ -4,6 +4,9 @@ import com.vmo.freshermanagement.intern.entity.Fresher;
 import com.vmo.freshermanagement.intern.service.FresherService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +28,7 @@ public class FresherRestController {
     }
 
     @GetMapping("/freshers/{fresher_id}")
+    @Cacheable(value = "freshers", key = "#fresherId")
     @Operation(summary = "Each fresher information")
     public Fresher getFresher(@PathVariable("fresher_id") int fresher_id) {
         return fresherService.getFresherById(fresher_id);
@@ -37,6 +41,7 @@ public class FresherRestController {
     }
 
     @PutMapping("/freshers/{fresher_id}")
+    @CachePut(value = "freshers", key = "#fresherId")
     @Operation(summary = "Update fresher information")
     public Fresher updateInfoFresher(@PathVariable("fresher_id") int fresherId,
                                      @RequestParam("name") String name,
@@ -51,6 +56,7 @@ public class FresherRestController {
     }
 
     @DeleteMapping("/freshers/{fresher_id}")
+    @CacheEvict(value = "freshers", allEntries = true)
     @Operation(summary = "Remove fresher")
     public void deleteFresher(@PathVariable("fresher_id") int fresherId) {
         fresherService.deleteFresherById(fresherId);
