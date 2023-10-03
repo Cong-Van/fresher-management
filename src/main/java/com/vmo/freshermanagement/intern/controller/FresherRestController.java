@@ -30,8 +30,8 @@ public class FresherRestController {
     @GetMapping("/freshers/{fresher_id}")
     @Cacheable(value = "freshers", key = "#fresherId")
     @Operation(summary = "Each fresher information")
-    public Fresher getFresher(@PathVariable("fresher_id") int fresher_id) {
-        return fresherService.getFresherById(fresher_id);
+    public Fresher getFresher(@PathVariable("fresher_id") int fresherId) {
+        return fresherService.getFresherById(fresherId);
     }
 
     @PostMapping("/freshers")
