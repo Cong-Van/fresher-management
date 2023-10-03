@@ -20,6 +20,11 @@ spring:
           auth: true
           starttls:
             enable: true
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+      cache-null-value: true
 
 # Show message when query error
 logging:

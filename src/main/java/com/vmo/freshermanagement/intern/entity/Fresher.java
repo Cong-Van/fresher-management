@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 
@@ -21,7 +22,7 @@ import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_FOR
 @AllArgsConstructor
 @Table(name = "freshers")
 @Builder
-public class Fresher {
+public class Fresher implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
