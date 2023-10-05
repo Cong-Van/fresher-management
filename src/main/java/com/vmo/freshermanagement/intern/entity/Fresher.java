@@ -21,6 +21,8 @@ import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_FOR
 @Builder
 public class Fresher implements Serializable {
 
+    private static final long serialVersionUID = 190512204195025122L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

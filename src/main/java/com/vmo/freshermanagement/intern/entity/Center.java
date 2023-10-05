@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_TIME_FORMAT;
@@ -16,7 +17,9 @@ import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_TIM
 @AllArgsConstructor
 @Table(name = "centers")
 @Builder
-public class Center {
+public class Center implements Serializable {
+
+    private static final long serialVersionUID = 190512204195025120L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
