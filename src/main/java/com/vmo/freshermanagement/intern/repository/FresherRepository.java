@@ -26,4 +26,7 @@ public interface FresherRepository extends JpaRepository<Fresher, Integer> {
 
     @Query(value = "SELECT * FROM freshers WHERE graduated_date is null", nativeQuery = true)
     List<Fresher> findAllNotGraduatedFresher();
+
+    @Query(value = "SELECT * FROM freshers WHERE ?1 <= mark_avg and mark_avg <= ?2", nativeQuery = true)
+    List<Fresher> findAllByMarkRange(double mark1, double mark2);
 }

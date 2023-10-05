@@ -120,6 +120,18 @@ public class FresherServiceImpl implements FresherService {
         return fresherRepository.findAllByMarkAvg(mark);
     }
 
+    @Override
+    public List<Fresher> getAllFresherByMark(double mark1, double mark2) {
+        return fresherRepository.findAllByMarkRange(mark1, mark2);
+    }
+
+    @Override
+    public Fresher updateGraduatedFresherStatus(int fresherId) {
+        Fresher fresher = getFresherById(fresherId);
+        fresher.setGraduatedDate(LocalDate.now());
+        return fresher;
+    }
+
     private LocalDate dateValue(String date) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_FORMAT);
         return LocalDate.parse(date, dtf);

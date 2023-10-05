@@ -92,8 +92,21 @@ public class FresherRestController {
     }
 
     @GetMapping("/freshers/find-by-mark")
-    @Operation(summary = "Find freshers by mark (>= mark)")
+    @Operation(summary = "Find freshers by mark")
     public List<Fresher> findFresherByMark(@RequestParam("mark") double mark) {
         return fresherService.getAllFresherByMark(mark);
+    }
+
+    @GetMapping("/freshers/find-by-mark-range")
+    @Operation(summary = "Find freshers by mark (in mark range)")
+    public List<Fresher> findFresherByMarkRange(@RequestParam("mark1") double mark1,
+                                                @RequestParam("mark2") double mark2) {
+        return fresherService.getAllFresherByMark(mark1, mark2);
+    }
+
+    @PutMapping("/freshers/{fresher_id}/graduate")
+    @Operation(summary = "Update fresher status to graduate")
+    public Fresher updateGraduatedFresherStatus(@PathVariable("fresher_id") int fresherId) {
+        return fresherService.updateGraduatedFresherStatus(fresherId);
     }
 }

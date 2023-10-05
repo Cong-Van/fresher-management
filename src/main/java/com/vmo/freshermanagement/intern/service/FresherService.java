@@ -27,4 +27,7 @@ public interface FresherService {
 
     List<Fresher> getAllFresherByMark(double mark);
 
+    List<Fresher> getAllFresherByMark(double mark1, double mark2);
+
+    Fresher updateGraduatedFresherStatus(int fresherId);
 }
