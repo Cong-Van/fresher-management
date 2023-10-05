@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_TIME_FORMAT;

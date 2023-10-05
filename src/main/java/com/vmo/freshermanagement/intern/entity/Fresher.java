@@ -3,10 +3,7 @@ package com.vmo.freshermanagement.intern.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.vmo.freshermanagement.intern.common.Gender;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -46,7 +43,7 @@ public class Fresher implements Serializable {
     private String phone;
 
     @Column(name = "email")
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", message = "Incorrect email format")
+    @Email(message = "Incorrect email format")
     private String email;
 
     @Column(name = "position")
