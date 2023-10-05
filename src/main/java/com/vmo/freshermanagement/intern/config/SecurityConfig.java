@@ -3,7 +3,6 @@ package com.vmo.freshermanagement.intern.config;
 import com.vmo.freshermanagement.intern.security.JwtAccessDeniedHandler;
 import com.vmo.freshermanagement.intern.security.JwtAuthenticationEntryPoint;
 import com.vmo.freshermanagement.intern.security.JwtAuthorizationFilter;
-import com.vmo.freshermanagement.intern.service.CenterService;
 import com.vmo.freshermanagement.intern.service.LoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,6 +60,10 @@ public class SecurityConfig {
                         .requestMatchers(PUBLIC_URLS).permitAll()
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/v1/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/v1/users").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/v1/users/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/v1/users").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/v1/users/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
