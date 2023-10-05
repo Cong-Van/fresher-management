@@ -3,6 +3,7 @@ package com.vmo.freshermanagement.intern.service.impl;
 import com.vmo.freshermanagement.intern.common.Gender;
 import com.vmo.freshermanagement.intern.entity.Center;
 import com.vmo.freshermanagement.intern.entity.Fresher;
+import com.vmo.freshermanagement.intern.repository.CenterRepository;
 import com.vmo.freshermanagement.intern.repository.FresherRepository;
 import com.vmo.freshermanagement.intern.service.FileService;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,11 @@ import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_FOR
 public class FileServiceImpl implements FileService {
 
     private FresherRepository fresherRepository;
+    private CenterRepository centerRepository;
 
-    public FileServiceImpl(FresherRepository fresherRepository) {
+    public FileServiceImpl(FresherRepository fresherRepository, CenterRepository centerRepository) {
         this.fresherRepository = fresherRepository;
+        this.centerRepository = centerRepository;
     }
 
     @Override
@@ -88,6 +91,7 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             throw new IOException(e.getMessage());
         }
+        centerRepository.saveAll(centers);
         return centers;
     }
 
