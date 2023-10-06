@@ -82,7 +82,8 @@ public class Fresher implements Serializable {
     @Column(name = "markAvg")
     private double markAvg;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "center_id")
     private Center center;
 
