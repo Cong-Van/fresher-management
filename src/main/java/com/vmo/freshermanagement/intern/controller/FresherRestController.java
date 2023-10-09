@@ -6,7 +6,6 @@ import com.vmo.freshermanagement.intern.service.FresherService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,6 @@ public class FresherRestController {
     @Cacheable(value = "freshers", key = "'allFreshers'")
     @Operation(summary = "All freshers list")
     public List<Fresher> getAllFreshers() {
-        System.out.println("Thử");
         return fresherService.getAllFreshers();
     }
 
