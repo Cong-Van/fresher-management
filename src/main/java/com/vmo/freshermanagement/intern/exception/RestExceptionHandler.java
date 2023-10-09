@@ -55,38 +55,13 @@ public class RestExceptionHandler {
         return createHttpResponse(METHOD_NOT_ALLOWED, String.format(METHOD_IS_NOT_ALLOW, supportedMethod));
     }
 
-    @ExceptionHandler(FresherNotFoundException.class)
-    public ResponseEntity<HttpResponse> fresherNotFoundException(FresherNotFoundException exc) {
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<HttpResponse> centerNotFoundException(DataNotFoundException exc) {
         return createHttpResponse(BAD_REQUEST, exc.getMessage());
     }
 
-    @ExceptionHandler(CenterNotFoundException.class)
-    public ResponseEntity<HttpResponse> centerNotFoundException(CenterNotFoundException exc) {
-        return createHttpResponse(BAD_REQUEST, exc.getMessage());
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<HttpResponse> userNotFoundException(UserNotFoundException exc) {
-        return createHttpResponse(BAD_REQUEST, exc.getMessage());
-    }
-
-    @ExceptionHandler(UsernameExistException.class)
-    public ResponseEntity<HttpResponse> usernameExistException(UsernameExistException exc) {
-        return createHttpResponse(BAD_REQUEST, exc.getMessage());
-    }
-
-    @ExceptionHandler(UsernameNotExistException.class)
-    public ResponseEntity<HttpResponse> usernameNotExistException(UsernameNotExistException exc) {
-        return createHttpResponse(BAD_REQUEST, exc.getMessage());
-    }
-
-    @ExceptionHandler(EmailExistException.class)
-    public ResponseEntity<HttpResponse> emailExistException(EmailExistException exc) {
-        return createHttpResponse(BAD_REQUEST, exc.getMessage());
-    }
-
-    @ExceptionHandler(PhoneExistException.class)
-    public ResponseEntity<HttpResponse> phoneExistException(PhoneExistException exc) {
+    @ExceptionHandler(DataAlreadyExistException.class)
+    public ResponseEntity<HttpResponse> emailExistException(DataAlreadyExistException exc) {
         return createHttpResponse(BAD_REQUEST, exc.getMessage());
     }
 
