@@ -13,11 +13,9 @@ public interface CenterService {
 
     Center getCenterById(int centerId);
 
-    Center updateCenter(int centerId, String username, String name, String phone, String address, String description);
+    Center updateCenter(Center updateCenter, String username);
 
     void deleteCenterById(int centerId);
-
-    Fresher transferFresherToCenter(int centerId, int fresherId, String username);
 
     List<Fresher> getAllFresherByCenterId(int centerId);
 }

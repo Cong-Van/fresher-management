@@ -14,19 +14,19 @@ public interface FresherRepository extends JpaRepository<Fresher, Integer> {
 
     List<Fresher> findAllByCenterId(int centerId);
 
-    @Query(value = "SELECT * FROM freshers WHERE name LIKE %?1%", nativeQuery = true)
+    @Query(value = "SELECT f FROM Fresher f WHERE name LIKE %?1%")
     List<Fresher> findAllByName(String name);
 
     List<Fresher> findAllByLanguage(String language);
 
-    @Query(value = "SELECT * FROM freshers WHERE email LIKE %?1%", nativeQuery = true)
+    @Query(value = "SELECT f FROM Fresher f WHERE email LIKE %?1%")
     List<Fresher> findAllByEmail(String email);
 
     List<Fresher> findAllByMarkAvg(double mark);
 
-    @Query(value = "SELECT * FROM freshers WHERE graduated_date is null", nativeQuery = true)
+    @Query(value = "SELECT f FROM Fresher f WHERE graduatedDate is null")
     List<Fresher> findAllNotGraduatedFresher();
 
-    @Query(value = "SELECT * FROM freshers WHERE ?1 <= mark_avg and mark_avg <= ?2", nativeQuery = true)
+    @Query(value = "SELECT f FROM Fresher f WHERE ?1 <= markAvg and markAvg <= ?2")
     List<Fresher> findAllByMarkRange(double mark1, double mark2);
 }

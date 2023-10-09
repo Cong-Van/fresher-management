@@ -30,9 +30,9 @@ public class UserRestController {
         return userService.addUser(username, password);
     }
 
-    @PutMapping("/users/{user_id}")
+    @PutMapping("/users/{userId}")
     @Operation(summary = "Update user account")
-    public User updateUser(@PathVariable("user_id") int userId,
+    public User updateUser(@PathVariable("userId") int userId,
                            @RequestParam("username") String username,
                            @RequestParam("password") String password) {
         return userService.updateUser(userId, username, password);

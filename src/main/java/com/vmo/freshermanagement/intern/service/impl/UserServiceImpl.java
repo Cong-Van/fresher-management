@@ -1,9 +1,8 @@
 package com.vmo.freshermanagement.intern.service.impl;
 
 import com.vmo.freshermanagement.intern.entity.User;
-import com.vmo.freshermanagement.intern.exception.UserNotFoundException;
-import com.vmo.freshermanagement.intern.exception.UsernameExistException;
-import com.vmo.freshermanagement.intern.exception.UsernameNotExistException;
+import com.vmo.freshermanagement.intern.exception.DataAlreadyExistException;
+import com.vmo.freshermanagement.intern.exception.DataNotFoundException;
 import com.vmo.freshermanagement.intern.repository.UserRepository;
 import com.vmo.freshermanagement.intern.service.UserService;
 import org.slf4j.Logger;
@@ -38,7 +37,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(username);
         if (user != null) {
             LOGGER.error(String.format(USERNAME_ALREADY_EXIST, username));
-            throw new UsernameExistException(String.format(USERNAME_ALREADY_EXIST, username));
+            throw new DataAlreadyExistException(String.format(USERNAME_ALREADY_EXIST, username));
         } else {
             User newUser = new User(username, encodePassword(password));
             userRepository.save(newUser);
@@ -52,11 +51,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(username);
 
         if (userOp.isEmpty()) {
-            throw new UserNotFoundException(NOT_FOUND_USER);
+            throw new DataNotFoundException(NOT_FOUND_USER);
         }
         User updateUse = userOp.get();
         if (user != null && !updateUse.getUsername().equals(username)) {
-            throw new UsernameExistException(String.format(USERNAME_ALREADY_EXIST, username));
+            throw new DataAlreadyExistException(String.format(USERNAME_ALREADY_EXIST, username));
         }
 
         updateUse.setUsername(username);
@@ -69,22 +68,20 @@ public class UserServiceImpl implements UserService {
     public User lockUser(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotExistException(USERNAME_NOT_EXIST);
+            throw new DataNotFoundException(USERNAME_NOT_EXIST);
         }
         user.setNotLocked(false);
-        userRepository.save(user);
-        return user;
+        return  userRepository.save(user);
     }
 
     @Override
     public User unlockUser(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotExistException(USERNAME_NOT_EXIST);
+            throw new DataNotFoundException(USERNAME_NOT_EXIST);
         }
         user.setNotLocked(true);
-        userRepository.save(user);
-        return user;
+        return userRepository.save(user);
     }
 
     private String encodePassword(String password) {

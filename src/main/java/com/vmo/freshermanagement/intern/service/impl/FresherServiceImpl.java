@@ -1,15 +1,17 @@
 package com.vmo.freshermanagement.intern.service.impl;
 
 import com.vmo.freshermanagement.intern.common.Gender;
+import com.vmo.freshermanagement.intern.entity.Center;
 import com.vmo.freshermanagement.intern.entity.Fresher;
-import com.vmo.freshermanagement.intern.exception.EmailExistException;
-import com.vmo.freshermanagement.intern.exception.FresherNotFoundException;
-import com.vmo.freshermanagement.intern.exception.PhoneExistException;
+import com.vmo.freshermanagement.intern.exception.DataAlreadyExistException;
+import com.vmo.freshermanagement.intern.exception.DataNotFoundException;
+import com.vmo.freshermanagement.intern.repository.CenterRepository;
 import com.vmo.freshermanagement.intern.repository.FresherRepository;
 import com.vmo.freshermanagement.intern.service.FresherService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -21,9 +23,11 @@ import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_FOR
 public class FresherServiceImpl implements FresherService {
 
     private FresherRepository fresherRepository;
+    private CenterRepository centerRepository;
 
-    public FresherServiceImpl(FresherRepository fresherRepository) {
+    public FresherServiceImpl(FresherRepository fresherRepository, CenterRepository centerRepository) {
         this.fresherRepository = fresherRepository;
+        this.centerRepository = centerRepository;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class FresherServiceImpl implements FresherService {
     public Fresher getFresherById(int fresherId) {
         Optional<Fresher> fresher = fresherRepository.findById(fresherId);
         if (fresher.isEmpty()) {
-            throw new FresherNotFoundException(NOT_FOUND_FRESHER);
+            throw new DataNotFoundException(NOT_FOUND_FRESHER);
         }
         return fresher.get();
     }
@@ -47,11 +51,11 @@ public class FresherServiceImpl implements FresherService {
 
         Fresher savedFresher = fresherRepository.findByEmail(email);
         if (savedFresher != null) {
-            throw new EmailExistException(String.format(EMAIL_WAS_IN_USE, email, savedFresher.getName()));
+            throw new DataAlreadyExistException(String.format(EMAIL_WAS_IN_USE, email, savedFresher.getName()));
         }
         savedFresher = fresherRepository.findByPhone(phone);
         if (savedFresher != null) {
-            throw new PhoneExistException(String.format(PHONE_NUMBER_WAS_IN_USE, phone, savedFresher.getName()));
+            throw new DataAlreadyExistException(String.format(PHONE_NUMBER_WAS_IN_USE, phone, savedFresher.getName()));
         }
 
         newFresher.setJoinedDate(LocalDate.now());
@@ -59,27 +63,20 @@ public class FresherServiceImpl implements FresherService {
     }
 
     @Override
-    public Fresher updateFresher(int fresherId, String name, String dob, String gender,
-                                 String phone, String email, String position, String language) {
-        Fresher fresher = getFresherById(fresherId);
+    public Fresher updateFresher(Fresher updateFresher) {
+        String email = updateFresher.getEmail();
+        String phone = updateFresher.getPhone();
 
         Fresher savedFresher = fresherRepository.findByEmail(email);
-        if (savedFresher != null && !fresher.getEmail().equals(email)) {
-            throw new EmailExistException(String.format(EMAIL_WAS_IN_USE, email, savedFresher.getName()));
+        if (savedFresher != null && updateFresher.getId() != savedFresher.getId()) {
+            throw new DataAlreadyExistException(String.format(EMAIL_WAS_IN_USE, email, savedFresher.getName()));
         }
-        savedFresher = fresherRepository.findByPhone(phone);
-        if (savedFresher != null && !fresher.getPhone().equals(phone)) {
-            throw new PhoneExistException(String.format(PHONE_NUMBER_WAS_IN_USE, phone, savedFresher.getName()));
+        savedFresher = fresherRepository.findByPhone(updateFresher.getPhone());
+        if (savedFresher != null && updateFresher.getId() != savedFresher.getId()) {
+            throw new DataAlreadyExistException(String.format(PHONE_NUMBER_WAS_IN_USE, phone, savedFresher.getName()));
         }
 
-        fresher.setName(name);
-        fresher.setDob(dateValue(dob));
-        fresher.setGender(genderValue(gender));
-        fresher.setPhone(phone);
-        fresher.setEmail(email);
-        fresher.setPosition(position);
-        fresher.setLanguage(language);
-        return fresherRepository.save(fresher);
+        return fresherRepository.save(updateFresher);
     }
 
     @Override
@@ -95,7 +92,7 @@ public class FresherServiceImpl implements FresherService {
     public void deleteFresherById(int fresherId) {
         Optional<Fresher> fresher = fresherRepository.findById(fresherId);
         if (fresher.isEmpty()) {
-            throw new FresherNotFoundException(NOT_FOUND_FRESHER);
+            throw new DataNotFoundException(NOT_FOUND_FRESHER);
         }
         fresherRepository.delete(fresher.get());
     }
@@ -123,6 +120,16 @@ public class FresherServiceImpl implements FresherService {
     @Override
     public List<Fresher> getAllFresherByMark(double mark1, double mark2) {
         return fresherRepository.findAllByMarkRange(mark1, mark2);
+    }
+
+    @Override
+    public Fresher transferFresherToCenter(int fresherId, Center center, String username) {
+        Fresher fresher = getFresherById(fresherId);
+
+        fresher.setCenter(center);
+        center.setUpdatedBy(username);
+        center.setUpdatedDate(LocalDateTime.now());
+        return fresherRepository.save(fresher);
     }
 
     @Override

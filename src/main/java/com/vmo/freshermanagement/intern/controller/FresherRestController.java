@@ -1,5 +1,6 @@
 package com.vmo.freshermanagement.intern.controller;
 
+import com.vmo.freshermanagement.intern.entity.Center;
 import com.vmo.freshermanagement.intern.entity.Fresher;
 import com.vmo.freshermanagement.intern.service.FresherService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,13 +24,14 @@ public class FresherRestController {
     }
 
     @GetMapping("/freshers")
+    @Cacheable(value = "freshers", key = "'allFreshers'")
     @Operation(summary = "All freshers list")
     public List<Fresher> getAllFreshers() {
+        System.out.println("Thử");
         return fresherService.getAllFreshers();
     }
 
     @GetMapping("/freshers/{fresher_id}")
-    @Cacheable(value = "freshers", key = "#fresherId")
     @Operation(summary = "Each fresher information")
     public Fresher getFresher(@PathVariable("fresher_id") int fresherId) {
         return fresherService.getFresherById(fresherId);
@@ -40,19 +43,11 @@ public class FresherRestController {
         return fresherService.addFresher(newFresher);
     }
 
-    @PutMapping("/freshers/{fresher_id}")
-    @CachePut(value = "freshers", key = "#fresherId")
+    @PutMapping("/freshers")
     @Operation(summary = "Update fresher information")
-    public Fresher updateInfoFresher(@PathVariable("fresher_id") int fresherId,
-                                     @RequestParam("name") String name,
-                                     @RequestParam("dob") String dob,
-                                     @RequestParam("gender") String gender,
-                                     @RequestParam("phone") String phone,
-                                     @RequestParam("email") String email,
-                                     @RequestParam("position") String position,
-                                     @RequestParam("language") String language) {
+    public Fresher updateInfoFresher(@RequestBody Fresher updateFresher) {
 
-        return fresherService.updateFresher(fresherId, name, dob, gender, phone, email, position, language);
+        return fresherService.updateFresher(updateFresher);
     }
 
     @DeleteMapping("/freshers/{fresher_id}")
@@ -62,7 +57,7 @@ public class FresherRestController {
         fresherService.deleteFresherById(fresherId);
     }
 
-    @PutMapping("/freshers/{fresher_id}/update-mark")
+    @PutMapping("/freshers/update-mark/{fresher_id}")
     @Operation(summary = "Update fresher's mark")
     public Fresher updateMark(@PathVariable("fresher_id") int fresherId,
                               @RequestParam("mark1") double mark1,
@@ -104,7 +99,16 @@ public class FresherRestController {
         return fresherService.getAllFresherByMark(mark1, mark2);
     }
 
-    @PutMapping("/freshers/{fresher_id}/graduate")
+    @PutMapping("/freshers/transfer-to-center/{fresher_id}")
+    @Operation(summary = "Add fresher to center")
+    public Fresher transferFresherToCenter(@PathVariable("fresher_id") int fresherId,
+                                           @RequestBody Center center) {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return fresherService.transferFresherToCenter(fresherId, center, username);
+    }
+
+    @PutMapping("/freshers/graduate/{fresher_id}")
     @Operation(summary = "Update fresher status to graduate")
     public Fresher updateGraduatedFresherStatus(@PathVariable("fresher_id") int fresherId) {
         return fresherService.updateGraduatedFresherStatus(fresherId);

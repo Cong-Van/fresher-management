@@ -1,5 +1,6 @@
 package com.vmo.freshermanagement.intern.service;
 
+import com.vmo.freshermanagement.intern.entity.Center;
 import com.vmo.freshermanagement.intern.entity.Fresher;
 
 import java.util.List;
@@ -12,8 +13,7 @@ public interface FresherService {
 
     Fresher addFresher(Fresher newFresher);
 
-    Fresher updateFresher(int fresherId, String name, String dob, String gender,
-                          String phone, String email, String position, String language);
+    Fresher updateFresher(Fresher updateFresher);
 
     void deleteFresherById(int fresherId);
 
@@ -28,6 +28,8 @@ public interface FresherService {
     List<Fresher> getAllFresherByMark(double mark);
 
     List<Fresher> getAllFresherByMark(double mark1, double mark2);
+
+    Fresher transferFresherToCenter(int fresherId, Center center, String username);
 
     Fresher updateGraduatedFresherStatus(int fresherId);
 }

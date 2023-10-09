@@ -3,9 +3,10 @@ package com.vmo.freshermanagement.intern.controller;
 import com.vmo.freshermanagement.intern.entity.Center;
 import com.vmo.freshermanagement.intern.entity.Fresher;
 import com.vmo.freshermanagement.intern.service.CenterService;
-import com.vmo.freshermanagement.intern.service.FresherService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class CenterRestController {
     }
 
     @GetMapping("/centers")
+    @Cacheable(value = "centers", key = "allCenters")
     @Operation(summary = "All centers list")
     public List<Center> getAllCenter() {
         return centerService.getAllCenter();
@@ -41,28 +43,16 @@ public class CenterRestController {
         return centerService.createCenter(newCenter);
     }
 
-    @PutMapping("/centers/{center_id}")
+    @PutMapping("/centers")
     @Operation(summary = "Update center information")
-    public Center updateCenter(@PathVariable("center_id") int centerId,
-                               @RequestParam("name") String name,
-                               @RequestParam("phone") String phone,
-                               @RequestParam("address") String address,
-                               @RequestParam("description") String description) {
+    public Center updateCenter(@Valid @RequestBody Center updateCenter) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return centerService.updateCenter(centerId, username, name, phone, address, description);
-    }
-
-    @PutMapping("/centers/{center_id}/{fresher_id}")
-    @Operation(summary = "Add fresher to center")
-    public Fresher transferFresherToCenter(@PathVariable("center_id") int centerId,
-                                           @PathVariable("fresher_id") int fresherId) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        return centerService.transferFresherToCenter(centerId, fresherId, username);
+        return centerService.updateCenter(updateCenter, username);
     }
 
     @DeleteMapping("/centers/{center_id}")
+    @CacheEvict(value = "centers", allEntries = true)
     @Operation(summary = "Delete center information")
     public void deleteCenter(@PathVariable("center_id") int centerId) {
         centerService.deleteCenterById(centerId);

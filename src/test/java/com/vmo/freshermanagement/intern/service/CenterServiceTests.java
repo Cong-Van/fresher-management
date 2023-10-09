@@ -3,11 +3,9 @@ package com.vmo.freshermanagement.intern.service;
 import com.vmo.freshermanagement.intern.common.Gender;
 import com.vmo.freshermanagement.intern.entity.Center;
 import com.vmo.freshermanagement.intern.entity.Fresher;
-import com.vmo.freshermanagement.intern.exception.CenterNotFoundException;
 import com.vmo.freshermanagement.intern.repository.CenterRepository;
 import com.vmo.freshermanagement.intern.repository.FresherRepository;
 import com.vmo.freshermanagement.intern.service.impl.CenterServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +24,8 @@ import java.util.Optional;
 import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_FORMAT;
 import static com.vmo.freshermanagement.intern.constant.ServiceConstant.DATE_TIME_FORMAT;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -92,47 +92,28 @@ public class CenterServiceTests {
         List<Center> centers = centerService.getAllCenter();
 
         // then - verify the output
-        assertThat(centers).isNotNull();
+        assertNotNull(centers);
         assertThat(centers).hasSize(2);
     }
 
     // JUnit test for updateCenter method
     @Test
     @DisplayName("JUnit test for updateCenter method")
-    public void givenCenterId_whenUpdateCenter_thenReturnUpdatedCenter() {
+    public void givenCenterObject_whenUpdateCenter_thenReturnUpdatedCenter() {
         // given - precondition or setup
-        String name = "New name", phone = "0123456789", address = "New Address", description = "New Description";
-        given(centerRepository.findById(1)).willReturn(Optional.of(center1));
+        String newName = "New name";
+        String newPhone = "0113114115";
         given(centerRepository.save(center1)).willReturn(center1);
+        center1.setName(newName);
+        center1.setPhone(newPhone);
 
         // when - action or behaviour that we are going to test
-        Center updatedCenter = centerService.updateCenter(center1.getId(), ADMIN, name, phone, address, description);
+        Center updatedCenter = centerService.updateCenter(center1, ADMIN);
 
         // then - verify the output
-        assertThat(updatedCenter.getUpdatedBy()).isEqualTo(ADMIN);
-        assertThat(updatedCenter.getName()).isEqualTo(name);
-        assertThat(updatedCenter.getPhone()).isEqualTo(phone);
-        assertThat(updatedCenter.getAddress()).isEqualTo(address);
-        assertThat(updatedCenter.getDescription()).isEqualTo(description);
-    }
-
-    // JUnit test for updateCenter method which throws exception
-    @Test
-    @DisplayName("JUnit test for updateCenter method which throws exception")
-    public void givenCenterId_whenUpdateCenter_thenThrowsException() {
-        int centerId = 1;
-        // given - precondition or setup
-        String name = "New name", phone = "0123456789", address = "New Address", description = "New Description";
-        given(centerRepository.findById(centerId)).willReturn(Optional.empty());
-
-        // when - action or behaviour that we are going to test
-        Assertions.assertThrows(CenterNotFoundException.class, () -> {
-            Center updatedCenter = centerService.updateCenter(centerId, ADMIN, name, phone, address, description);
-        });
-
-
-        // then - verify the output
-        verify(centerRepository, never()).save(center1);
+        assertEquals(updatedCenter.getUpdatedBy(), ADMIN);
+        assertEquals(newName, updatedCenter.getName());
+        assertEquals(newPhone, updatedCenter.getPhone());
     }
 
     // JUnit test for deleteCenterById method
@@ -150,24 +131,6 @@ public class CenterServiceTests {
 
         // then - verify the output
         verify(centerRepository, times(1)).deleteById(centerId);
-    }
-
-    // JUnit test for transferFresherToCenter method
-    @Test
-    @DisplayName("JUnit test for transferFresherToCenter method")
-    public void givenFresherIdCenterId_whenTransferFresherToCenter_thenReturnUpdatedFresher() {
-        // given - precondition or setup
-        int centerId = 2, fresherId = 1;
-        given(centerRepository.findById(centerId)).willReturn(Optional.of(center2));
-        given(fresherRepository.findById(fresherId)).willReturn(Optional.of(fresher));
-        given(fresherRepository.save(fresher)).willReturn(fresher);
-
-        // when - action or behaviour that we are going to test
-        centerService.transferFresherToCenter(centerId, fresherId, MANAGER);
-
-        // then - verify the output
-        assertThat(fresher.getCenter()).isNotNull();
-        assertThat(fresher.getCenter().getId()).isEqualTo(center2.getId());
     }
 
     private LocalDate dateValue(String date) {
